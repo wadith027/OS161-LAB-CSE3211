@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{CSE-3211 LAB 1 Part 2} 
+\author{Shadman Wadith\\ Roll :- 27}
+
+\date{20,June,2021}
+\begin{document}
+
+\maketitle
+\section*{Question and Answers}
+
+Question 1: What is the vm system called that is configured for assignment 0?\\
+Answer : DUMBVM \\
+Location: kern/arch/mips/conf/conf.arch \\
+\\Question 2. Which register number is used for the stack pointer (sp) in OS/161? \\
+Answer : 29 \\
+Location: kern/arch/mips/include/kern/regdefs.h \\
+\\Question 3. What bus/busses does OS/161 support? \\
+Answer : LAMEbus\\
+Location: kern/arch/sys161/include/bus.h \\
+\\Question 4. What is the difference between splhigh and spl0? \\
+Answer : splhigh() sets IPL to the highest value, disabling all interrupts.
+spl0() sets IPL to 0, enabling all interrupts. \\
+Location: kern/include/spl.h \\\\
+\\Question 5. Why do we use typedefs like u int32 t instead of simply saying "int"? \\
+Answer: Since we're in a 32-bit platform, size t, ssize t, and ptrdifft
+can correctly be either (unsigned) int or (unsigned) long. However, if we
+don't define it to the same one gcc is using, gcc will get upset. So, in order to make sure that we really get a 32-bit unsigned integer as unsigned
+int depends on the platform, we use u int32 t.\\
+Location: kern/arch/include/mips/kern/types.h\\
+\\Question 6: What must be the first thing in the process control block?\\
+Answer : Process state\\
+\\Question 7. What does splx return?\\
+Answer: Returns old spl level\\
+Location: kern/thread/spl.c\\
+\\Question 8. What is the highest interrupt level?\\
+Answer: There are two interrupt levels, 0 and 1. 1 is defined as IPL HIGH.
+Location: kern/include/spl.h\\
+\\Question 9. What function is called when user-level code generates a fatal fault?\\
+Answer: Function called when user-level code hits a fatal fault is static
+void kill curthread (vaddr t epc, unsigned code, vaddr tvaddr).\\
+Location: kern/arch/mips/locore/trap.c\\
+\\Question 10. How frequently are hardclock interrupts generated?\\
+Answer: Hardclocks per second is 100Hz (\#define HZ 100) \\
+Location: kern/include/clock.h \\
+\\Question 11. What functions comprise the standard interface to a VFS device?\\
+Answer: devop\_eachopen - called on each open call to allow denying
+the open. devop\_io - for both reads and writes (the uio indicates the
+direction). devop\_ioctl - miscellaneous control operations.\\
+Location: kern/include/device.h\\
+\\Question 12. How many characters are allowed in a volume name?\\
+Answer: 32 (\#define SFS VOLNAME SIZE 32 /*max length of volume name*/)\\
+Location: kern/include/kern/sfs.h\\
+\\Question 13. How many direct blocks does an SFS file have?\\
+Answer: 15 (\#define SFS NDIRECT 15 /*\# of direct blocks in inode*/)
+Location: kern/include/kern/sfs.h\\
+\\Question 14. What is the standard interface to a file system (i.e., what functions
+must you implement to implement a new file system)?\\
+Answer: fsop sync - Flush all dirty buffers to disk. fsop\_getvolname -
+Return volume name of filelesystem. fsop\_getroot - Return root vnode of
+filesystem. fsop\_unmount - Attempt unmount of filesystem.\\
+Location: kern/include/fs.h\\
+\\Question 15. What function puts a thread to sleep?\\
+Answer: void wchan\_sleep(struct wchan *wc, struct spinlock *lk);\\
+Location: kern/thread/thread.c\\
+\\Question 16. How large are OS/161 pids?\\
+Answer: 32 bit (typedef \_\_i32\_\_pid\_t; /* Process ID */)\\
+Location: kern/include/kern/types.h\\
+\\Question 17. What operations can you do on a vnode?\\
+Answer: vop\_eachopen, vop\_reclaim, vop\_read, vop\_readlink vop\_eachopen,
+vop\_reclaim, vop\_read, vop\_readlink, vop\_getdirentry, vop\_write, vop\_ioctl,
+vop\_stat, vop\_gettype, vop\_isseekable, vop\_fsync, vop\_mmap, vop\_truncate,
+vop\_namefile, vop\_creat, vop\_symlink, vop\_mkdir, vop\_link, vop\_remove,
+vop\_rmdir, vop\_rename, vop\_lookup, vop\_lookparent.\\
+Location: kern/include/vnode.h\\
+\\Question 18. What is the maximum path length in OS/161?\\
+Answer : 1024\\
+Location: kern/include/kern/limits.h\\
+\\Question 19. What is the system call number for a reboot?\\
+Answer : 119\\
+\\Question 20. Where is STDIN FILENO defined?\\
+Answer: \#define STDIN\_ILENO 0 /* Standard input */\\
+Location: kern/include/kern/unistd.h\\
+\\Question 21. What does kmain() do?\\
+Answer: Kernel main : Boot up, then fork the menu thread; wait for a reboot request, and then shut down.\\
+Location: kern/main/main.c\\
+\\Question 22. Is it OK to initialise the thread system before the scheduler? Why (not)?\\
+Answer: Yes. Because the scheduler bootstrap creates the run queue and the thread bootstrap initializes the first thread.\\
+Location: kern/thread/thread.c\\
+\\Question 23. What is a zombie?\\
+Answer: Zombies are threads that have exited but still need to have thread destroy called on them.\\
+Location: kern/thread/thread.c\\
+\\Question 24. How large is the initial run queue?\\
+Answer: Though we did not find any initialization of the run queue, it seems that this line of code is an indication of run queue size (curcpu -- c\_runqueue.tl\_count = 0;)\\
+Location: kern/thread/thread.c\\
+\\Question 25. What does a device name in OS/161 look like?\\
+Answer: The name of a device is always just "device:". The VFS layer puts in the device name for us, so we don't need to do anything further. (e.g. "lhd0").\\
+Location: kern/vfs/vfslist.c\\
+\\Question 26. What does a raw device name in OS/161 look like?\\
+Answer: Name of raw device (e.g., "lhd0raw"). Is non-NULL if and only if this device can have a filesystem mounted on it.\\
+Location: kern/vfs/vfslist.c\\
+\\Question 27. What lock protects the vnode reference count?\\
+Answer: vn countlock\\
+Location: kern/vfs/vnode.c\\
+\\Question 28. What device types are currently supported?\\
+Answer: Block Type and Character Type Devices.\\
+Location: kern/vfs/device.c\\
+\end{document}
